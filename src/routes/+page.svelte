@@ -1,18 +1,25 @@
 <script type='ts'>
+  import { Spinner } from "flowbite-svelte";
   import SearchInput from '../components/SearchInput.svelte'
   import searchLyrics from '../lib/searchLyrics';
 
 
-  let lyrics: string[];
+  let lyrics: string[] = [];
   let blobUrl: string;
+  let isLoading = false;
 
   const handleClick = async (event: CustomEvent) => {
+    lyrics = [];
+    blobUrl = "";
     const searchTerm = event.detail;
     if (!searchTerm) return;
+    isLoading = true;
 
     const response = await searchLyrics(searchTerm);
 
-    lyrics = response.data[0].lyrics.split('\n');
+    lyrics = [ ...response.data[0].lyrics.split('\n') ];
+
+    isLoading = false;
 
     const pdfResponse = await fetch('/api/generatePdf', {
       method: 'POST',
@@ -38,9 +45,12 @@
   </div>
 
   <div class="p-4 text-center">
-    {#if lyrics}
+    {#if isLoading}
+      <Spinner class="text-blue-700" />
+    {/if}
+    {#if lyrics.length}
       {#each lyrics as piece}
-{piece}<br>
+        {piece}<br>
       {/each}
     {/if}
   </div>
