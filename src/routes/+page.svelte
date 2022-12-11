@@ -1,4 +1,4 @@
-<script type='ts'>
+<script lang='ts'>
   import { Spinner } from "flowbite-svelte";
   import SearchInput from '../components/SearchInput.svelte'
   import searchLyrics from '../lib/searchLyrics';
