@@ -23,7 +23,11 @@
 
     const pdfResponse = await fetch('/api/generatePdf', {
       method: 'POST',
-      body: JSON.stringify({ lyrics: lyrics.join('\n') })
+      body: JSON.stringify({
+          lyrics: lyrics.join('\n'),
+          songName: response.data[0].songName,
+          artist: response.data[0].artist
+      })
     });
 
     blobUrl = URL.createObjectURL(await pdfResponse.blob());

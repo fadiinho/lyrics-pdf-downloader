@@ -1,5 +1,6 @@
-import generatePdf from '$lib/generatePdf'
-import { error, type RequestEvent } from '@sveltejs/kit';
+import generatePdf from '$lib/generatePdf';
+import { error } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 
 import fs from 'fs';
 
