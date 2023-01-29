@@ -12,11 +12,11 @@ interface GeneratePDFProps {
     config: Config
 }
 
-export default ({ lyrics, songName, config }: GeneratePDFProps): Promise<{ path?: string; fileName?: string; error?: boolean; message?: string; }> => {
+export default ({ lyrics, songName, artist, config }: GeneratePDFProps): Promise<{ path?: string; fileName?: string; error?: boolean; message?: string; }> => {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'a4', margin: 10 });
 
-    const fileName = `${Date.now()}.pdf`;
+    const fileName = songName && artist ? `${artist} - ${songName}.pdf` :`${Date.now()}.pdf`;
 
     const stream = fs.createWriteStream(`/tmp/${fileName}`);
 
