@@ -9,6 +9,7 @@
   let isLoading = false;
   let artist: string;
   let songName: string;
+  let error: string;
 
   const handleClick = async (event: CustomEvent) => {
     lyrics = [];
@@ -19,21 +20,26 @@
     if (!searchTerm) return;
     isLoading = true;
 
-    const response = await searchLyrics(searchTerm);
+    const response = await searchLyrics(searchTerm).catch(() => {
+        error = "Música não encontrada 😢"
+        isLoading = false;
+    });
 
-    lyrics = [ ...response.data[0].lyrics.split('\n') ];
+    if (!response) return;
+
+    lyrics = [ ...response[0].lyrics.split('\n') ];
 
     isLoading = false;
 
-    artist = response.data[0].artist;
-    songName = response.data[0].songName;
+    artist = response[0].artist;
+    songName = response[0].songName;
 
     const pdfResponse = await fetch('/api/generatePdf', {
       method: 'POST',
       body: JSON.stringify({
           lyrics: lyrics.join('\n'),
-          songName: response.data[0].songName,
-          artist: response.data[0].artist
+          songName: response[0].songName,
+          artist: response[0].artist
       })
     });
 
@@ -59,6 +65,11 @@
     {#if isLoading}
       <Spinner class="text-blue-700" />
     {/if}
+
+    {#if error}
+        <div class="text-lg text-red-600">{error}</div>
+    {/if}
+
     {#if artist && songName}
         <p class="m-2 mb-8 font-bold">{artist} - {songName}</p>
     {/if}
