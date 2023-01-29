@@ -12,6 +12,8 @@
 
   const handleClick = async (event: CustomEvent) => {
     lyrics = [];
+    artist = "";
+    songName = "";
     blobUrl = "";
     const searchTerm = event.detail;
     if (!searchTerm) return;
@@ -57,10 +59,16 @@
     {#if isLoading}
       <Spinner class="text-blue-700" />
     {/if}
+    {#if artist && songName}
+        <p class="m-2 mb-8 font-bold">{artist} - {songName}</p>
+    {/if}
     {#if lyrics.length}
-      {#each lyrics as piece}
-        {piece}<br>
-      {/each}
+        <div id="lyrics">
+          {#each lyrics as piece}
+            <span>{piece}</span>
+            <br>
+          {/each}
+        </div>
     {/if}
   </div>
 </main>
