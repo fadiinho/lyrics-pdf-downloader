@@ -6,6 +6,16 @@ module.exports = {
   ],
   theme: {
     extend: {
+        animation: {
+            "border-pulse": "border-pulse 1s linear infinite"
+        },
+        keyframes: {
+            "border-pulse": {
+                '0%, 100%': { 'border-color': '' },
+                '50%': { 'border-color': 'green' },
+            }
+
+        }
     },
   },
   plugins: [
